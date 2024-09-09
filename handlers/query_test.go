@@ -2,8 +2,8 @@ package handlers
 
 import (
 	"fmt"
-	"testing"
 	"github.com/gopsdv/lightweight/database"
+	"testing"
 )
 
 func TestAddExercise(t *testing.T) {
@@ -13,11 +13,10 @@ func TestAddExercise(t *testing.T) {
 	fmt.Println(ExerciseID)
 }
 
-
 func TestGetExercise(t *testing.T) {
 	database.Connect()
 	defer database.CloseDB()
-	rows , err := getExercises()
+	rows, err := getExercises()
 	if err != nil {
 		fmt.Println("Rows: ", err)
 	}

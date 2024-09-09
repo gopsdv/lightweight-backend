@@ -14,8 +14,6 @@ type Set struct {
 	RIR         uint8 // Reps in Reserve
 }
 
-var ExerciseID uint8 = 1
-
 func POST(w http.ResponseWriter, r *http.Request) {
 
 	var exercise database.Exercise

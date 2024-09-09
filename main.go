@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/gopsdv/lightweight/database"
+	"github.com/gopsdv/lightweight/handlers"
 	"log"
 	"net/http"
-	"github.com/gopsdv/lightweight/handlers"
-	"github.com/gopsdv/lightweight/database"
 )
 
 func main() {

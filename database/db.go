@@ -16,9 +16,6 @@ type Exercise struct {
 	Name string `json:"name"`
 }
 
-var Exercises = []Exercise{}
-
-
 func Connect() error {
 	envErr := godotenv.Load("/home/gdv/lightweight/.env")
     if envErr != nil {
