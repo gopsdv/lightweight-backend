@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gopsdv/lightweight/database"
-	"github.com/gopsdv/lightweight/handlers"
+	"github.com/gopsdv/lightweight/handlers/exercises"
 	"log"
 	"net/http"
 )
@@ -17,6 +17,6 @@ func main() {
 	defer database.CloseDB()
 
 	log.Println("Starting server at port 8080")
-	http.HandleFunc("/exercises", handlers.ExercisesHandler)
+	http.HandleFunc("/exercises", exercises.MethodHandler)
 	http.ListenAndServe(":8080", nil)
 }

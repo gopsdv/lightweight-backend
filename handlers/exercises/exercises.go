@@ -6,7 +6,6 @@ import (
 	"net/http"
 )
 
-
 type Exercise struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
@@ -46,7 +45,7 @@ func GET(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(exersices)
 }
 
-func ExercisesHandler(w http.ResponseWriter, r *http.Request) {
+func MethodHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		POST(w, r)
