@@ -16,6 +16,7 @@ CREATE TABLE `sets` (
   `id`       INT AUTO_INCREMENT NOT NULL,
   `workout_id` INT NOT NULL,
   `set_num`  INT NOT NULL,
+  `weight` FLOAT NOT NULL,
   `reps` INT DEFAULT 0,
   `preps` INT DEFAULT 0,
   `rir` INT DEFAULT 0,
