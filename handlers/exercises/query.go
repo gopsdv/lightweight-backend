@@ -18,10 +18,10 @@ func AddExercise(exercise Exercise) (int64, error) {
 	return id, nil
 }
 
-func getExercises() (any, error) {
+func getExercises() ([]Exercise , error) {
 	rows, err := database.DB.Query("SELECT * FROM exercises")
 	if err != nil {
-		return 0, fmt.Errorf("addExercise: %v", err)
+		return nil, fmt.Errorf("addExercise: %v", err)
 	}
 	var exercises []Exercise
 
