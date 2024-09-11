@@ -1,22 +1,20 @@
-package handlers
+package exercises
 
 import (
 	"encoding/json"
-	"github.com/gopsdv/lightweight/database"
 	"log"
 	"net/http"
 )
 
-type Set struct {
-	Weight      float32
-	Reps        uint8
-	PartialReps uint8
-	RIR         uint8 // Reps in Reserve
+
+type Exercise struct {
+	ID   int    `json:"id"`
+	Name string `json:"name"`
 }
 
 func POST(w http.ResponseWriter, r *http.Request) {
 
-	var exercise database.Exercise
+	var exercise Exercise
 
 	if err := json.NewDecoder(r.Body).Decode(&exercise); err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)

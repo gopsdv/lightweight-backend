@@ -1,11 +1,11 @@
-package handlers
+package exercises
 
 import (
 	"fmt"
 	"github.com/gopsdv/lightweight/database"
 )
 
-func AddExercise(exercise database.Exercise) (int64, error) {
+func AddExercise(exercise Exercise) (int64, error) {
 	result, err := database.DB.Exec("INSERT INTO exercises (name) VALUES (?)", exercise.Name)
 	if err != nil {
 		return 0, fmt.Errorf("addExercise: %v", err)
@@ -23,10 +23,10 @@ func getExercises() (any, error) {
 	if err != nil {
 		return 0, fmt.Errorf("addExercise: %v", err)
 	}
-	var exercises []database.Exercise
+	var exercises []Exercise
 
 	for rows.Next() {
-		var exercise database.Exercise
+		var exercise Exercise
 		if err := rows.Scan(&exercise.ID, &exercise.Name); err != nil {
 			return nil, fmt.Errorf("%v", err)
 		}

@@ -11,11 +11,6 @@ import (
 
 var DB *sql.DB
 
-type Exercise struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
-}
-
 func Connect() error {
 	envErr := godotenv.Load("/home/gdv/lightweight/.env")
     if envErr != nil {

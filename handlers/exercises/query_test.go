@@ -1,4 +1,4 @@
-package handlers
+package exercises
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 func TestAddExercise(t *testing.T) {
 	database.Connect()
 	defer database.CloseDB()
-	ExerciseID, _ := AddExercise(database.Exercise{Name: "Barbell Back Squat"})
+	ExerciseID, _ := AddExercise(Exercise{Name: "Barbell Back Squat"})
 	fmt.Println(ExerciseID)
 }
 
