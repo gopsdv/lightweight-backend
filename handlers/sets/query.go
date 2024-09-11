@@ -5,32 +5,32 @@ import (
 	"github.com/gopsdv/lightweight/database"
 )
 
-func AddExercise(exercise Exercise) (int64, error) {
-	result, err := database.DB.Exec("INSERT INTO exercises (name) VALUES (?)", exercise.Name)
+func AddSet(set Set) (int64, error) {
+	result, err := database.DB.Exec("INSERT INTO sets (workout_id, set_num, weight, reps, preps, rir) VALUES (?,?,?,?,?,?)", set.WorkoutID, set.SetNum, set.Weight, set.Reps, set.PartialReps, set.RIR)
 	if err != nil {
-		return 0, fmt.Errorf("addExercise: %v", err)
+		return 0, fmt.Errorf("addSet: %v", err)
 	}
 
 	id, err := result.LastInsertId()
 	if err != nil {
-		return 0, fmt.Errorf("addExercise: %v", err)
+		return 0, fmt.Errorf("addSet: %v", err)
 	}
 	return id, nil
 }
 
-func getExercises() (any, error) {
-	rows, err := database.DB.Query("SELECT * FROM exercises")
+func getSets() ([]Set, error) {
+	rows, err := database.DB.Query("SELECT * FROM sets")
 	if err != nil {
-		return 0, fmt.Errorf("addExercise: %v", err)
+		return nil, fmt.Errorf("addSet: %v", err)
 	}
-	var exercises []Exercise
+	var sets []Set
 
 	for rows.Next() {
-		var exercise Exercise
-		if err := rows.Scan(&exercise.ID, &exercise.Name); err != nil {
+		var set Set
+		if err := rows.Scan(&set.ID, &set.WorkoutID, &set.SetNum, &set.Weight, &set.Reps, &set.PartialReps, &set.RIR); err != nil {
 			return nil, fmt.Errorf("%v", err)
 		}
-		exercises = append(exercises, exercise)
+		sets = append(sets, set)
 	}
-	return exercises, nil
+	return sets, nil
 }

@@ -1,60 +1,59 @@
 package workouts
 
-// import (
-// 	"encoding/json"
-// 	"log"
-// 	"net/http"
-// )
-
+import (
+	"encoding/json"
+	"log"
+	"net/http"
+)
 
 type Workout struct {
-	Weight      float32
-	Reps        uint8
-	PartialReps uint8
-	RIR         uint8 // Reps in Reserve
+	ID         uint16
+	ExerciseID uint8
+	Date       string
 }
 
-// func POST(w http.ResponseWriter, r *http.Request) {
+func POST(w http.ResponseWriter, r *http.Request) {
 
-// 	var exercise Exercise
+	var workout Workout
 
-// 	if err := json.NewDecoder(r.Body).Decode(&exercise); err != nil {
-// 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-// 		return
-// 	}
+	if err := json.NewDecoder(r.Body).Decode(&workout); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
+	}
 
-// 	ExerciseID, err := AddExercise(exercise)
-// 	if err != nil {
-// 		log.Fatalln(err)
-// 	}
+	WorkoutID, err := AddWorkout(workout)
+	if err != nil {
+		log.Fatalln(err)
+	}
 
-// 	response := map[string]interface{}{"error": false, "message": "Created a new exercise", "data": map[string]interface{}{"exerciseID": ExerciseID}}
-// 	w.Header().Set("Content-Type", "application/json")
-// 	resErr := json.NewEncoder(w).Encode(response)
-// 	if resErr != nil {
-// 		log.Print("Request Successfull")
-// 	}
-// }
+	response := map[string]interface{}{"error": false, "message": "A Workout added", "data": map[string]interface{}{"workoutID": WorkoutID}}
 
-// func GET(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	resErr := json.NewEncoder(w).Encode(response)
+	if resErr != nil {
+		log.Print("Request Successfull")
+	}
+}
 
-// 	exersices, err := getExercises()
-// 	if err != nil {
-// 		log.Fatalln(err)
-// 		http.Error(w, "Failed to fetch excersices", http.StatusBadRequest)
-// 	}
+func GET(w http.ResponseWriter, r *http.Request) {
 
-// 	w.Header().Set("Content-Type", "application/json")
-// 	json.NewEncoder(w).Encode(exersices)
-// }
+	workouts, err := getWorkouts()
+	if err != nil {
+		log.Fatalln(err)
+		http.Error(w, "Failed to fetch excersices", http.StatusBadRequest)
+	}
 
-// func ExercisesHandler(w http.ResponseWriter, r *http.Request) {
-// 	switch r.Method {
-// 	case http.MethodPost:
-// 		POST(w, r)
-// 	case http.MethodGet:
-// 		GET(w, r)
-// 	default:
-// 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-// 	}
-// }
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(workouts)
+}
+
+func MethodHandler(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodPost:
+		POST(w, r)
+	case http.MethodGet:
+		GET(w, r)
+	default:
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+}

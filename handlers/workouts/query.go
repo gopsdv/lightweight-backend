@@ -1,36 +1,36 @@
 package workouts
 
-// import (
-// 	"fmt"
-// 	"github.com/gopsdv/lightweight/database"
-// )
+import (
+	"fmt"
+	"github.com/gopsdv/lightweight/database"
+)
 
-// func AddExercise(exercise Exercise) (int64, error) {
-// 	result, err := database.DB.Exec("INSERT INTO exercises (name) VALUES (?)", exercise.Name)
-// 	if err != nil {
-// 		return 0, fmt.Errorf("addExercise: %v", err)
-// 	}
+func AddWorkout(workout Workout) (int64, error) {
+	result, err := database.DB.Exec("INSERT INTO workouts (exercise_id, date) VALUES (?,?)", workout.ExerciseID, workout.Date)
+	if err != nil {
+		return 0, fmt.Errorf("addWorkout %v", err)
+	}
 
-// 	id, err := result.LastInsertId()
-// 	if err != nil {
-// 		return 0, fmt.Errorf("addExercise: %v", err)
-// 	}
-// 	return id, nil
-// }
+	id, err := result.LastInsertId()
+	if err != nil {
+		return 0, fmt.Errorf("addWorkout: %v", err)
+	}
+	return id, nil
+}
 
-// func getExercises() (any, error) {
-// 	rows, err := database.DB.Query("SELECT * FROM exercises")
-// 	if err != nil {
-// 		return 0, fmt.Errorf("addExercise: %v", err)
-// 	}
-// 	var exercises []Exercise
+func getWorkouts() ([]Workout, error) {
+	rows, err := database.DB.Query("SELECT * FROM workouts")
+	if err != nil {
+		return nil, fmt.Errorf("addWorkout: %v", err)
+	}
+	var workouts []Workout
 
-// 	for rows.Next() {
-// 		var exercise Exercise
-// 		if err := rows.Scan(&exercise.ID, &exercise.Name); err != nil {
-// 			return nil, fmt.Errorf("%v", err)
-// 		}
-// 		exercises = append(exercises, exercise)
-// 	}
-// 	return exercises, nil
-// }
+	for rows.Next() {
+		var workout Workout
+		if err := rows.Scan(&workout.ID, &workout.ExerciseID, &workout.Date); err != nil {
+			return nil, fmt.Errorf("%v", err)
+		}
+		workouts = append(workouts, workout)
+	}
+	return workouts, nil
+}

@@ -6,27 +6,31 @@ import (
 	"net/http"
 )
 
-
-type Exercise struct {
-	ID   int    `json:"id"`
-	Name string `json:"name"`
+type Set struct {
+	ID          uint32
+	WorkoutID   uint8
+	SetNum      uint8
+	Weight      float32
+	Reps        uint8
+	PartialReps uint8
+	RIR         uint8 // Reps in Reserve
 }
 
 func POST(w http.ResponseWriter, r *http.Request) {
 
-	var exercise Exercise
+	var workingSet Set
 
-	if err := json.NewDecoder(r.Body).Decode(&exercise); err != nil {
+	if err := json.NewDecoder(r.Body).Decode(&workingSet); err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
 
-	ExerciseID, err := AddExercise(exercise)
+	setID, err := AddSet(workingSet)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	response := map[string]interface{}{"error": false, "message": "Created a new exercise", "data": map[string]interface{}{"exerciseID": ExerciseID}}
+	response := map[string]interface{}{"error": false, "message": "Added a working set", "data": map[string]interface{}{"setID": setID}}
 	w.Header().Set("Content-Type", "application/json")
 	resErr := json.NewEncoder(w).Encode(response)
 	if resErr != nil {
@@ -36,7 +40,7 @@ func POST(w http.ResponseWriter, r *http.Request) {
 
 func GET(w http.ResponseWriter, r *http.Request) {
 
-	exersices, err := getExercises()
+	exersices, err := getSets()
 	if err != nil {
 		log.Fatalln(err)
 		http.Error(w, "Failed to fetch excersices", http.StatusBadRequest)
@@ -46,7 +50,7 @@ func GET(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(exersices)
 }
 
-func ExercisesHandler(w http.ResponseWriter, r *http.Request) {
+func MethodHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case http.MethodPost:
 		POST(w, r)
